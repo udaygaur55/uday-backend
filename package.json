@@ -1,0 +1,16 @@
+{
+  "name": "backend-ub",
+  "version": "1.0.0",
+  "description": "a backend series on youtube",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript",
+    "backend",
+    "uday"
+  ],
+  "author": "uday gaur",
+  "license": "ISC"
+}
