@@ -1,4 +1,5 @@
-const { Error } = require("mongoose");
+import { Error as MongooseError } from "mongoose";
+
 
 class ApiError extends Error {
     constructor(
@@ -22,4 +23,4 @@ class ApiError extends Error {
     }
 }
 
-export {ApiError}
+export { ApiError }
