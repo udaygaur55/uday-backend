@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import { mongoose } from "mongoose";
 
 const generateAccessAndRefereshTokens = async (userId) => {
     try {
@@ -156,7 +157,7 @@ const logoutUser = asyncHandler(async (req, res) => {
                 req.user._id,
                 {
                     $set: {
-                        refreshToken: undefined
+                        refreshToken: 1 // setting refreshToken to 1 to invalidate it
                     }
                 },
                 {
@@ -365,7 +366,7 @@ const getWatchedHistory = asyncHandler(async (req, res) => {
                     {
                         $lookup: {
                             from: "users",
-                            localField: Owner,
+                            localField: "owner",
                             foreignField: "_id",
                             as: "owner",
                             pipeline: [
@@ -374,7 +375,7 @@ const getWatchedHistory = asyncHandler(async (req, res) => {
                                         fullName: 1,
                                         username: 1,
                                         avatar: 1
-                                     }
+                                    }
                                 }
                             ]
                         }
@@ -386,17 +387,18 @@ const getWatchedHistory = asyncHandler(async (req, res) => {
                             }
                         }
                     },
-                ]   
+                ]
             }
         },
         {
             $project: {
-                watchedVideos: 1
+                watchedHistory: 1
             }
         }
-    ])
+    ]);
+
     return res.status(200).json(
-        new ApiResponse(200, user[0].watchedHistory, "Watched history fetched successfully")
+        new ApiResponse(200, user[0]?.watchedHistory || [], "Watched history fetched successfully")
     );
 });
 
